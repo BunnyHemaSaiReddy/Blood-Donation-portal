@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Blood Donation Portal</title>
+    <link rel="stylesheet" href="profile.css">
+    <style>
+        .label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-container">
+            <div id="profileDetails" class="profile-details">
+                <div class="profile-header">
+                    <img id="profilePic" class="profile-pic" src="default-profile.png" alt="Profile Picture">
+                    <h2 id="userNameDisplay">Name: N/A</h2>
+                </div>
+                <table >
+
+                    <tr >
+                        <td>Email:</td>
+                        <td><span id="userEmailDisplay">N/A</span></td>
+                        <td rowspan="13"> </td>                              
+                    </tr>
+                    <tr>
+                        <td>Age:</td>
+                        <td><span id="userAgeDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Qualifications:</td>
+                        <td><span id="userQualificationsDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Blood Group:</td>
+                        <td><span id="userBloodGroupDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number:</td>
+                        <td><span id="userPhoneNumberDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td><span id="userAddressDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Emergency Contact:</td>
+                        <td><span id="userEmergencyContactDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Occupation:</td>
+                        <td><span id="userOccupationDisplay">N/A</span></td>
+                    </tr>
+                  
+                    <tr>
+                        <td>Type of Donation:&emsp;&emsp;</td>
+                        <td><span id="userDonationTypeDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Last Donation Date:</td>
+                        <td><span id="lastDonationDateDisplay">N/A</span></td>
+                    </tr>
+                 
+                    <tr>
+                        <td>Health Conditions:</td>
+                        <td><span id="healthConditionsDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medical History:</td>
+                        <td><span id="medicalHistoryDisplay">N/A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Allergies:</td>
+                        <td><span id="userAllergiesDisplay">N/A</span></td>
+                    </tr>
+                <tr>
+                <td><button id="editProfileButton">Edit Profile</button></td>
+                <td  ><a href="footer.html" style="text-decoration: none;vertical-align:top; color: #e91426; margin-top: 20px; display: inline-block;"><b><u>Go to Portal</u></b></a>
+            </td></tr>
+            </table>
+            </div>
+
+            <!-- This form appears if no profile data is found -->
+            <div id="profileForm" class="profile-form hidden">
+                <h2>Enter Your Profile Details</h2>
+                <form id="profileFormDetails">
+                    <table>
+                        <tr>
+                            <td><pre>                             </pre></td>
+                            <td>
+                                <pre>                                                        </pre>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="profilePicInput">Profile Picture:</label></td>
+                            <td>
+                                <input type="file" id="profilePicInput" name="profilePicInput" accept="image/*" style="display: none;">
+                                <label for="profilePicInput" style="cursor: pointer ; "> Click here to select the profile photo < Auto updated ,Go back and see for your conformation></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="userName">Name:</label></td>
+                            <td><input type="text" id="userName" name="userName" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userAge">Age:</label></td>
+                            <td><input type="number" id="userAge" name="userAge" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userQualifications">Qualifications:</label></td>
+                            <td><input type="text" id="userQualifications" name="userQualifications" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userBloodGroup">Blood Group:</label></td>
+                            <td><input type="text" id="userBloodGroup" name="userBloodGroup" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userPhoneNumber">Phone Number:</label></td>
+                            <td><input type="tel" id="userPhoneNumber" name="userPhoneNumber" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userAddress">Address:</label></td>
+                            <td><input type="text" id="userAddress" name="userAddress" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userEmergencyContact">Emergency Contact:</label></td>
+                            <td><input type="tel" id="userEmergencyContact" name="userEmergencyContact" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userOccupation">Occupation:</label></td>
+                            <td><input type="text" id="userOccupation" name="userOccupation" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userDonationType">Type of Donation:</label></td>
+                            <td><input type="text" id="userDonationType" name="userDonationType" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="lastDonationDate">Last Donation Date:</label></td>
+                            <td><input type="date" id="lastDonationDate" name="lastDonationDate" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="healthConditions">Health Conditions:</label></td>
+                            <td><textarea id="healthConditions" name="healthConditions"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="medicalHistory">Medical History:</label></td>
+                            <td><textarea id="medicalHistory" name="medicalHistory"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="userAllergies">Allergies:</label></td>
+                            <td><textarea id="userAllergies" name="userAllergies"></textarea></td>
+                        </tr>
+                    </table>
+                    <button type="submit">Save Profile</button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

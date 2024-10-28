@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Portal - Signup</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-image: url('men.jpg'); /* Correct way to specify the image URL */
+            background-size: cover; /* Cover the entire body */
+            /* Prevent image from repeating */
+         /* Center the image */
+        }</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Signup</h2>
+        
+        <!-- Step 1: Email input -->
+        <div id="step1">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <button type="button" onclick="sendVerificationCode()">Send Verification Code</button>
+        </div>
+
+        <!-- Step 2: Verification Code input -->
+        <div id="step2" style="display: none;">
+            <label for="verificationCode">Verification Code:</label>
+            <input type="text" id="verificationCode" name="verificationCode" required>
+            <button type="button" onclick="verifyCode()">Verify Code</button>
+        </div>
+
+        <!-- Step 3: Password configuration -->
+        <div id="step3" style="display: none;">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <div>
+                <input type="checkbox" id="termsCheckbox" required>
+                <label for="termsCheckbox">I agree to the <a href="terms_and_conditions.html" target="_blank">Terms and Conditions</a>.</label>
+            </div>
+
+            <button type="submit" onclick="signup()">Signup</button>
+        </div>
+
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

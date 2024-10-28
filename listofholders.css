@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+#search {
+    width: calc(100% - 100px);
+    padding: 10px;
+    margin-right: 10px;
+    border: 2px solid rgba(216, 66, 28, 0.904);
+    border-radius: 4px;
+}
+
+#searchButton {
+    padding: 10px 20px;
+    background-color: rgba(216, 66, 28, 0.904);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#donorList {
+    margin-top: 20px;
+}
+
+.donor {
+    border: 1px solid rgba(216, 66, 28, 0.904);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.donor button {
+    margin-top: 10px;
+    background-color: rgba(216, 66, 28, 0.904);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}

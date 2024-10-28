@@ -1,0 +1,118 @@
+/* CSS for the Blood Donation Portal */
+
+/* Header styling */
+header {
+    background-image: url('blood-donation.jpg'); /* Background image for header */
+    background-size: cover; /* Ensures image covers the header area */
+    background-position: center; /* Center the background image */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between items in header */
+    align-items: center; /* Align items vertically */
+    color: white; /* Text color */
+    position: relative;
+}
+
+/* Profile section styling */
+.profile-section {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Cursor changes when hovering over profile */
+}
+
+.profile-pic {
+    width: 50px; /* Profile picture size */
+    height: 50px;
+    border-radius: 50%; /* Make profile picture circular */
+    background-color: #ddd; /* Placeholder color for profile pic */
+    margin-right: 10px; /* Space between profile picture and name */
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0; /* Remove margin for proper alignment */
+}
+
+/* Logout button styling */
+#logoutButton {
+    background-color: #ff4d4d; /* Red background color */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding around text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+    font-size: 16px; /* Font size */
+}
+
+#logoutButton:hover {
+    background-color: #d63939; /* Darker red on hover */
+}
+
+/* Navigation bar */
+nav {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center; /* Center navigation links */
+    gap: 20px; /* Space between each link */
+}
+
+nav a {
+    text-decoration: none; /* Remove underline from links */
+    color: #3c3c3c; /* Link color */
+    font-size: 18px;
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+nav a:hover {
+    color: #ff4d4d; /* Change color on hover */
+}
+
+/* Profile details visibility */
+.profile-details {
+    display: none; /* Initially hide profile details */
+    margin-top: 20px;
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.profile-section.active + .profile-details {
+    display: block; /* Show when profile-section is active */
+}
+
+/* Social media section */
+.social-media {
+    display: flex;
+    justify-content: center; /* Center social media icons */
+    gap: 15px; /* Space between icons */
+    margin-top: 20px;
+}
+
+.social-media a {
+    text-decoration: none;
+    color: #555;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.social-media a:hover {
+    color: #ff4d4d; /* Hover color for icons */
+}
+
+/* Footer styling */
+footer {
+    background-color: #3c3c3c;
+    color: #f5f5f5;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+footer p {
+    margin: 5px 0;
+}

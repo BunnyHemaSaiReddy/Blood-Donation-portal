@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header - Blood Donation Portal</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #d9534f;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .header-content {
+            padding: 10px;
+        }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            background-image: url('avatar.jpg');
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+        }
+        nav a:hover {
+            color: #ffcccc;
+        }
+        button {
+            background-color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #d9534f;
+        }
+        button:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-content">
+        <div class="profile-section">
+            <div class="profile-pic"></div>
+            
+            <nav>
+                <a href="footer.html" target="contentFrame">Home</a>
+                <a href="why.html" target="contentFrame">Why Donate Blood?</a>
+                <a href="rules.html" target="contentFrame">Rules to Donate Blood</a>
+                <a href="pros.html" target="contentFrame">Pros and Cons</a>
+            </nav>
+            <pre>                                          </pre>
+            <span id="userEmail">default@example.com</span>
+            <button id="logoutButton">Logout</button>
+        </div>
+       
+    </div>
+    <script src="portal.js"></script>
+</body>
+</html>
