@@ -11,7 +11,7 @@ async function sendVerificationCode() {
 
     // Check if the email is already registered
     try {
-        const response = await fetch('http://localhost:3000/api/check-email', {
+        const response = await fetch('http://bunny-blooddonation.onrender.com/api/check-email', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ async function sendVerificationCode() {
 
     // Make a request to the server to send the email
     try {
-        const response = await fetch('http://localhost:3000/send-code', {
+        const response = await fetch('http://bunny-blooddonation.onrender.com/send-code', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ async function signup() {
     const email = document.getElementById('email').value;
 
     try {
-        const response = await fetch('http://localhost:3000/api/signup', {
+        const response = await fetch('http://bunny-blooddonation.onrender.com/api/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -150,5 +150,6 @@ document.getElementById('signupForm').addEventListener('submit', function (event
 //         window.location.href = 'signup.html'; // Redirect to signup page
 //     }
 // });
+
 
 
