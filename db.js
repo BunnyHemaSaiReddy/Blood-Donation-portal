@@ -3,11 +3,10 @@ const mysql = require('mysql2/promise');
 
 // Create connection pool
 const pool = mysql.createPool({
-    user: 'avnadmin',
-    password: 'AVNS_Jw69kwe1u00p9FJrgAH',
-    host: 'mysql-38e489bf-bunnyhemasaireddy-8196.b.aivencloud.com',
-    port: 13610,
-    database: 'defaultdb',
+    host: 'localhost',
+    user: 'root',
+    password: 'bunny',
+    database: 'blood_donation_portal',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -19,15 +18,13 @@ async function initializeDatabase() {
     try {
         // Create database if it doesn't exist
         const connection = await mysql.createConnection({
-            user: 'avnadmin',
-            password: 'AVNS_Jw69kwe1u00p9FJrgAH',
-            host: 'mysql-38e489bf-bunnyhemasaireddy-8196.b.aivencloud.com',
-            port: 13610,
+            host: 'localhost',
+            user: 'root',
+            password: 'bunny',
             authPlugin: 'mysql_native_password'
         });
 
-        // Use the existing database instead of creating a new one
-        // await connection.query('CREATE DATABASE IF NOT EXISTS defaultdb');
+        await connection.query('CREATE DATABASE IF NOT EXISTS blood_donation_portal');
         await connection.end();
 
         // Create tables

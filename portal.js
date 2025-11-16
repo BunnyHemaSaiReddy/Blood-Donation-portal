@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         try {
             // Retrieve user data from database
-            const response = await fetch(`https://bunny-blooddonation.onrender.com/api/user/${loggedInEmail}`);
+            const response = await fetch(`http://localhost:3000/api/user/${loggedInEmail}`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (loggedInEmail) {
             try {
-                await fetch('https://bunny-blooddonation.onrender.com/api/logout', {
+                await fetch('http://localhost:3000/api/logout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,5 +64,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.top.location.href = 'index.html'; // Redirect the top-level window to index.html
     });
 });
-
-
