@@ -1,12 +1,12 @@
-// Database connection module
 const mysql = require('mysql2/promise');
 
 // Create connection pool
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'bunny',
-    database: 'blood_donation_portal',
+    user: 'avnadmin',
+    password: 'AVNS_Jw69kwe1u00p9FJrgAH',
+    host: 'mysql-38e489bf-bunnyhemasaireddy-8196.b.aivencloud.com',
+    port: 13610,
+    database: 'defaultdb',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -18,9 +18,10 @@ async function initializeDatabase() {
     try {
         // Create database if it doesn't exist
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'bunny',
+            user: 'avnadmin',
+            password: 'AVNS_Jw69kwe1u00p9FJrgAH',
+            host: 'mysql-38e489bf-bunnyhemasaireddy-8196.b.aivencloud.com',
+            port: 13610,
             authPlugin: 'mysql_native_password'
         });
 
@@ -103,5 +104,6 @@ async function initializeDatabase() {
 }
 
 module.exports = { pool, initializeDatabase };
+
 
 
