@@ -11,7 +11,7 @@ async function sendVerificationCode() {
 
     // Check if the email is registered
     try {
-        const response = await fetch('http://bunny-blooddonation.onrender.com/api/check-email-exists', {
+        const response = await fetch('https://bunny-blooddonation.onrender.com/api/check-email-exists', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ async function sendVerificationCode() {
 
     // Send verification code via email
     try {
-        const response = await fetch('http://bunny-blooddonation.onrender.com/send-code', {
+        const response = await fetch('https://bunny-blooddonation.onrender.com/send-code', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ async function resetPassword() {
     }
 
     try {
-        const response = await fetch('http://bunny-blooddonation.onrender.com/api/reset-password', {
+        const response = await fetch('https://bunny-blooddonation.onrender.com/api/reset-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -118,4 +118,5 @@ async function resetPassword() {
         alert('An error occurred. Please try again.');
     }
 }
+
 
