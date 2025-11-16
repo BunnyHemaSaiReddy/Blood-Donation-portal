@@ -22,7 +22,7 @@ async function displayApplications() {
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
             console.error('Error response:', errorData);
-            throw new Error(errorData.message || `https ${response.status}: Failed to fetch applications`);
+            throw new Error(errorData.message || `httpss ${response.status}: Failed to fetch applications`);
         }
 
         const applications = await response.json();
@@ -71,6 +71,14 @@ function isValidEmail(email) {
 // Function to accept an application
 async function acceptApplication(applicationId) {
     try {
+        // First get application details
+        const appResponse = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`);
+        if (!appResponse.ok) {
+            throw new Error('Failed to fetch application details');
+        }
+        const application = await appResponse.json();
+
+        // Update status
         const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
@@ -86,6 +94,15 @@ async function acceptApplication(applicationId) {
             return;
         }
 
+        // Send email to donor and receiver
+        const requestData = {
+            requester: application.requester_name || application.requester_email,
+            requesterEmail: application.requester_email,
+            quantity: application.quantity,
+            situation: application.situation
+        };
+        await sendEmailToDonor(application.donor_email, requestData, 'accepted');
+
         alert('Application has been accepted and email sent to requester.');
         displayApplications(); // Refresh the applications list
     } catch (error) {
@@ -97,6 +114,14 @@ async function acceptApplication(applicationId) {
 // Function to deny an application
 async function denyApplication(applicationId) {
     try {
+        // First get application details
+        const appResponse = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`);
+        if (!appResponse.ok) {
+            throw new Error('Failed to fetch application details');
+        }
+        const application = await appResponse.json();
+
+        // Update status
         const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
@@ -112,6 +137,14 @@ async function denyApplication(applicationId) {
             return;
         }
 
+        // Send email to donor and receiver
+        const requestData = {
+            requester: application.requester_name || application.requester_email,
+            quantity: application.quantity,
+            situation: application.situation
+        };
+        await sendEmailToDonor(application.donor_email, requestData, 'denied');
+
         alert('Application has been denied and email sent to requester.');
         displayApplications(); // Refresh the applications list
     } catch (error) {
@@ -120,4 +153,56 @@ async function denyApplication(applicationId) {
     }
 }
 
+// Function to send email to donor
+function sendEmailToDonor(donorEmail, requestData, status) {
+    // Prepare the data to send
+    const emailData = {
+        donorEmail: donorEmail,
+        requestData: requestData,
+        status: status
+    };
+
+    // Send a POST request to the server
+    fetch('https://bunny-blooddonation.onrender.com/send-donor-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message); // Handle success message
+        alert(`Email sent to ${donorEmail} successfully!`); // Display success alert
+    })
+    .catch(error => {
+        console.error('Error sending email:', error);
+        alert('Failed to send email.'); // Display error alert
+    });
+}
+
+// Function to display messages to the user
+function displayMessage(message, isError = false) {
+    const messageDiv = document.getElementById('message');
+    if (messageDiv) {
+        messageDiv.innerHTML = message;
+        messageDiv.className = isError ? 'error' : 'success';
+        messageDiv.style.display = 'block';
+    }
+}
+
+// Automatically run when the page loads
+window.onload = function() {
+    const loggedInEmail = sessionStorage.getItem('loggedInEmail');
+
+    if (!loggedInEmail) {
+        displayMessage('No logged-in email found. Please log in first.', true);
+        return;
+    }
+}
 
