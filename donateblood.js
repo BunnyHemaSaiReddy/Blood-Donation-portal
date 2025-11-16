@@ -15,7 +15,7 @@ async function displayApplications() {
 
     try {
         console.log('Fetching applications for donor:', loggedInEmail);
-        const response = await fetch(`http://localhost:3000/api/applications/${encodeURIComponent(loggedInEmail)}`);
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/applications/${encodeURIComponent(loggedInEmail)}`);
         
         console.log('Response status:', response.status);
         
@@ -72,14 +72,14 @@ function isValidEmail(email) {
 async function acceptApplication(applicationId) {
     try {
         // First get application details
-        const appResponse = await fetch(`http://localhost:3000/api/application/${applicationId}`);
+        const appResponse = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`);
         if (!appResponse.ok) {
             throw new Error('Failed to fetch application details');
         }
         const application = await appResponse.json();
 
         // Update status
-        const response = await fetch(`http://localhost:3000/api/application/${applicationId}`, {
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,14 +115,14 @@ async function acceptApplication(applicationId) {
 async function denyApplication(applicationId) {
     try {
         // First get application details
-        const appResponse = await fetch(`http://localhost:3000/api/application/${applicationId}`);
+        const appResponse = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`);
         if (!appResponse.ok) {
             throw new Error('Failed to fetch application details');
         }
         const application = await appResponse.json();
 
         // Update status
-        const response = await fetch(`http://localhost:3000/api/application/${applicationId}`, {
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ function sendEmailToDonor(donorEmail, requestData, status) {
     };
 
     // Send a POST request to the server
-    fetch('http://localhost:3000/send-donor-email', {
+    fetch('https://bunny-blooddonation.onrender.com/send-donor-email', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -205,4 +205,5 @@ window.onload = function() {
         return;
     }
 }
+
 
