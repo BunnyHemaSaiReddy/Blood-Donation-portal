@@ -5,97 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Blood Donation Requests</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #00796b;
-        }
         .request {
             border: 1px solid #ddd;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
-            background-color: #f9f9f9;
         }
         .request-actions {
             margin-top: 10px;
         }
         .request-actions button {
             margin-right: 5px;
-            padding: 5px 10px;
-            background-color: #00796b;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .request-actions button:hover {
-            background-color: #005b52;
-        }
-        #message {
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 5px;
-            display: none; /* Hide initially */
-        }
-        .success {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-        }
-        .updated-button {
-            padding: 5px 10px;
-            margin-top: 10px;
-        }
-        .updated-button.accepted {
-            background-color: green; /* Indicate acceptance */
-            color: white;
-        }
-        .updated-button.denied {
-            background-color: red; /* Indicate denial */
-            color: white;
-        }
-        .error {
-            background-color: #ffcdd2;
-            color: #c62828;
-        }
-        .email-form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .email-form input {
-            padding: 10px;
-            width: 200px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .email-form button {
-            padding: 10px;
-            background-color: #00796b;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>Manage Blood Donation Requests</h1>
-
-    <!-- Form for email input -->
-
-    <!-- Div for displaying messages -->
-    <div id="message"></div>
-
-    <!-- Div for displaying all requests dynamically -->
+    <h1>Manage Blood Donation Applications</h1>
     <div id="requestsList">
-        <!-- Requests will be injected here by JavaScript -->
+        <!-- Applications will be displayed here dynamically -->
     </div>
 
     <script src="donateblood.js"></script>

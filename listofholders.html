@@ -4,75 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blood Donors List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #dbe2dedc;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 90%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #d9534f;
-        }
-
-        #search {
-            width: calc(100% - 100px);
-            padding: 8px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        #searchButton {
-            padding: 8px 12px;
-            border: none;
-            background-color: #d9534f;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #searchButton:hover {
-            background-color: #1da711;
-        }
-
-        #donorList {
-            margin-top: 20px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        #donorList th, #donorList td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        #donorList th {
-            background-color: #d9534f;
-            color: white;
-        }
-
-        #donorList tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .applied-status {
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="listofholders.css">
 </head>
 <body>
     <div class="container">
@@ -80,23 +12,8 @@
         <input type="text" id="search" placeholder="Search by Blood Group (e.g., O-)" />
         <button id="searchButton">Search</button>
         
-        <table id="donorList">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Blood Group</th>
-                    <th>Address</th>
-                    <th>Age</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Donor rows will be inserted here by JavaScript -->
-            </tbody>
-        </table>
+        <div id="donorList"></div>
     </div>
-
     <script src="listofholders.js"></script>
 </body>
 </html>

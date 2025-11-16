@@ -16,7 +16,7 @@
 </head>
 <body>
     <script>
-        const loggedInEmail = localStorage.getItem('loggedInEmail');
+        const loggedInEmail = sessionStorage.getItem('loggedInEmail');
         if (loggedInEmail) {
             window.location.href = 'portal.html';
         }

@@ -56,3 +56,18 @@ h1 {
     cursor: pointer;
     border-radius: 4px;
 }
+
+.status-applied {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.status-accepted {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.status-denied {
+    color: #f44336;
+    font-weight: bold;
+}

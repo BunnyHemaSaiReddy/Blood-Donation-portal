@@ -4,212 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donor Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: rgba(47, 58, 160, 0.5);
-            background-image: url("pr.jpg"); 
-            background-repeat: no-repeat;
-            background-size: cover; 
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 50px;
-            max-width: 100%; /* Max width for the container */
-            margin: auto; /* Center the container */
-        }
-
-        h1 {
-            color: #333;
-            text-align: center; /* Center the heading */
-        }
-
-        table {
-            width:35%;
-            
-            margin-top: 10px;
-        }
-
-        th {
-            padding:10px;
-            text-align: left;
-
-        }
-       
-
-        td {
-            color: rgb(48, 70, 197);
-        }
-
-        .apply-button {
-            background-color: #d9534f;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: block;
-            margin: 20px auto; /* Center the button */
-        }
-
-        .apply-button:hover {
-            background-color: #0056b3;
-        }
-            #applicationDialog {
-                border: 1px solid #d9534f;
-                border-radius: 15px;
-                padding: 20px;
-                max-width: 450px;
-                width: 90%;
-                background-color: #d9534f;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                font-family: Arial, sans-serif;
-            }
-        
-            #applicationDialog h3 {
-                margin-top: 0;
-                color: #1a0e0e;
-                text-align: center;
-                font-size: 1.5em;
-            }
-        
-            #applicationDialog label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: bold;
-                color: #333;
-            }
-        
-            #applicationDialog input[type="text"],
-            #applicationDialog input[type="number"],
-            #applicationDialog textarea {
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 15px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-        
-            #applicationDialog button {
-                padding: 8px 12px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-        
-            #submitApplication {
-                background-color: #00796b;
-                color: #fff;
-                margin-right: 10px;
-            }
-        
-            #submitApplication:hover {
-                background-color: #005f54;
-            }
-        
-            #cancelApplication {
-                background-color: #e0e0e0;
-                color: #333;
-            }
-        
-            #cancelApplication:hover {
-                background-color: #bdbdbd;
-            }
-        
-            #applicationDialog div {
-                text-align: right;
-            }
-        
-    </style>
+    <link rel="stylesheet" href="profiles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Donor Profile</h1>
-        <div id="profile">
-            <img id="profilePic" src="" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; border: 2px solid #007BFF; display: block; margin: 0 left;">
-            <b><table>
-                <tr>
-                    <th>Name</th>
-                    <td>:</td>
-                    <td id="name"></td>
-                </tr>
-                <tr>
-                    <th>Age</th>
-                    <td>:</td>
-                    <td id="age"></td>
-                </tr>
-                <tr>
-                    <th>Qualifications</th> <td>:</td>
-                    <td id="qualifications"></td>
-                </tr>
-                <tr>
-                    <th>Blood Group</th> <td>:</td>
-                    <td id="bloodGroup"></td>
-                </tr>
-                <tr>
-                    <th>Phone Number</th> <td>:</td>
-                    <td id="phoneNumber"></td>
-                </tr>
-                <tr>
-                    <th>Address</th> <td>:</td>
-                    <td id="address"></td>
-                </tr>
-                <tr>
-                    <th>Emergency Contact</th> <td>:</td>
-                    <td id="emergencyContact"></td>
-                </tr>
-                <tr>
-                    <th>Occupation</th> <td>:</td>
-                    <td id="occupation"></td>
-                </tr>
-                <tr>
-                    <th>Donation Type</th> <td>:</td>
-                    <td id="donationType"></td>
-                </tr>
-                <tr>
-                    <th>Last Donation Date</th> <td>:</td>
-                    <td id="lastDonationDate"></td>
-                </tr>
-                <tr>
-                    <th>Health Conditions</th> <td>:</td>
-                    <td id="healthConditions"></td>
-                </tr>
-                <tr>
-                    <th>Medical History</th> <td>:</td>
-                    <td id="medicalHistory"></td>
-                </tr>
-                <tr>
-                    <th>Allergies</th> <td>:</td>
-                    <td id="allergies"></td>
-                </tr>
-            </table></b>
-            <button id="applyButton" class="apply-button">Apply</button>
-            <button onclick="window.location.href='listofholders.html'" class="apply-button">Go to List of Holders</button>
-        </div>
+    <h1>Donor Profile</h1>
+    <div id="profile">
+        <img id="profilePic" src="" alt="Profile Picture" style="width: 150px; height: 150px;">
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Age:</strong> <span id="age"></span></p>
+        <p><strong>Qualifications:</strong> <span id="qualifications"></span></p>
+        <p><strong>Blood Group:</strong> <span id="bloodGroup"></span></p>
+        <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+        <p><strong>Address:</strong> <span id="address"></span></p>
+        <p><strong>Emergency Contact:</strong> <span id="emergencyContact"></span></p>
+        <p><strong>Occupation:</strong> <span id="occupation"></span></p>
+        <p><strong>Donation Type:</strong> <span id="donationType"></span></p>
+        <p><strong>Last Donation Date:</strong> <span id="lastDonationDate"></span></p>
+        <p><strong>Health Conditions:</strong> <span id="healthConditions"></span></p>
+        <p><strong>Medical History:</strong> <span id="medicalHistory"></span></p>
+        <p><strong>Allergies:</strong> <span id="allergies"></span></p>
+        <button id="applyButton">Apply</button>
     </div>
-    <dialog id="applicationDialog">
-        <form method="dialog">
-            <h3>Blood Donation Application</h3>
-            <label for="place">Place:</label>
-            <input type="text" id="place" name="place" required>
-            <label for="quantity">Quantity (in units):</label>
-            <input type="number" id="quantity" name="quantity" min="1" required>
-            <label for="situation">Situation Explanation:</label>
-            <textarea id="situation" name="situation" rows="4" required></textarea>
-            <div style="margin-top: 10px;">
-                <button id="submitApplication">Submit</button>
-                <button type="button" id="cancelApplication">Cancel</button>
-            </div>
-        </form>
-    </dialog>
-    <p id="applicationStatus" style="color: rgb(53, 206, 53); margin-top: 10px;font-size:20.3px;font-style:italic"></p>
+    
+    <!-- Section to show applicants (if viewing own profile) -->
+    <div id="applicantsSection" style="display: none; margin-top: 20px;">
+        <h2>Applications Received</h2>
+        <div id="applicantsList"></div>
+    </div>
     
     <script src="profile2.js"></script>
 </body>

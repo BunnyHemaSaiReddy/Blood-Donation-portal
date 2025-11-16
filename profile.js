@@ -1,12 +1,22 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const profileDetails = document.getElementById('profileDetails');
     const profileForm = document.getElementById('profileForm');
     const editProfileButton = document.getElementById('editProfileButton');
     const profilePic = document.getElementById('profilePic');
     const profilePicInput = document.getElementById('profilePicInput');
 
-    const loggedInEmail = localStorage.getItem('loggedInEmail') || 'user@example.com';
-    const storedData = JSON.parse(localStorage.getItem(loggedInEmail));
+    const loggedInEmail = sessionStorage.getItem('loggedInEmail') || 'user@example.com';
+    let storedData = null;
+
+    // Fetch user data from database
+    try {
+        const response = await fetch(`http://localhost:3000/api/user/${loggedInEmail}`);
+        if (response.ok) {
+            storedData = await response.json();
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
 
     // Show profile details if data exists, otherwise show the form
     if (storedData) {
@@ -93,13 +103,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function saveProfileData(profilePicData = '') {
-        // Retrieve existing data to retain the password
-        const existingData = JSON.parse(localStorage.getItem(loggedInEmail)) || {};
+    async function saveProfileData(profilePicData = '') {
+        const loggedInEmail = sessionStorage.getItem('loggedInEmail') || 'user@example.com';
+        
+        // Fetch existing data to retain profile picture if not changed
+        let existingData = null;
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/${loggedInEmail}`);
+            if (response.ok) {
+                existingData = await response.json();
+            }
+        } catch (error) {
+            console.error('Error fetching existing data:', error);
+        }
 
-        // Create updated data object while retaining the password
+        // Create updated data object
         const updatedData = {
-            name: document.getElementById('userName').value || existingData.name || loggedInEmail,
+            email: loggedInEmail,
+            name: document.getElementById('userName').value || existingData?.name || loggedInEmail,
             age: document.getElementById('userAge').value,
             qualifications: document.getElementById('userQualifications').value,
             bloodGroup: document.getElementById('userBloodGroup').value,
@@ -112,17 +133,30 @@ document.addEventListener('DOMContentLoaded', () => {
             healthConditions: document.getElementById('healthConditions').value,
             medicalHistory: document.getElementById('medicalHistory').value,
             allergies: document.getElementById('userAllergies').value,
-            profilePic: profilePicData || existingData.profilePic || 'default-profile.png' // Ensure the picture is saved here
+            profilePic: profilePicData || existingData?.profilePic || 'default-profile.png'
         };
 
-        // Keep the password intact
-        if (existingData.password) {
-            updatedData.password = existingData.password;
-        }
+        try {
+            const response = await fetch('http://localhost:3000/api/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData),
+            });
 
-        // Save the updated data back to local storage
-        localStorage.setItem(loggedInEmail, JSON.stringify(updatedData));
-        alert('Profile saved successfully!');
-        window.location.reload(); // Reload the page to show updated details
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || 'Failed to save profile. Please try again.');
+                return;
+            }
+
+            alert('Profile saved successfully!');
+            window.location.reload(); // Reload the page to show updated details
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            alert('An error occurred. Please try again.');
+        }
     }
 });

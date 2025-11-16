@@ -1,175 +1,121 @@
-// Function to create and store a new request
-function createRequest(email, quantity, situation, message) {
-    const requestId = `application_${Date.now()}`; // Unique key based on timestamp
-    const requestData = {
-        donor: email,
-        quantity: quantity,
-        situation: situation,
-        message: message,
-        status: 'pending'
-    };
-    localStorage.setItem(requestId, JSON.stringify(requestData));
-    displayMessage('Request has been created successfully.');
-}
+document.addEventListener('DOMContentLoaded', function () {
+    displayApplications();
+});
 
-// Function to display requests for a specific donor after login
-function displayRequestsForDonor(email) {
+// Function to display applications from requesters
+async function displayApplications() {
     const requestsList = document.getElementById('requestsList');
     requestsList.innerHTML = ''; // Clear previous results
 
-    // Retrieve all keys from localStorage and filter for this donor's requests
-    for (const key in localStorage) {
-        if (key.startsWith('application_')) { // Only handle application entries
-            try {
-                const requestData = JSON.parse(localStorage.getItem(key));
-                function getPhoneNumberByEmail(email) {
-                    const donorData = localStorage.getItem(email);
-                    if (donorData) {
-                        const data = JSON.parse(donorData);
-                        return data.phoneNumber || 'Phone number not available'; // Return phone number or a default message
-                    }
-                    return 'Phone number not found';
-                }
-                
-                // Get the phone number based on the requester's email
-                const requesterPhoneNumber = getPhoneNumberByEmail(requestData.requester);
-                // Check if the request belongs to the donor's email
-                if (requestData && requestData.donor === email) {
-                    const requestDiv = document.createElement('div');
-                    requestDiv.classList.add('request');
-                    requestDiv.innerHTML = `
-                        <p><strong>Blood Quantity Needed:</strong> ${requestData.quantity} units</p>
-                        <p><strong>Situation:</strong> ${requestData.situation}</p>
-                        <p><strong>Requester Phone:</strong> ${requesterPhoneNumber}</p>
-                        <p><strong>Requester Mail:</strong> ${requestData.requester}</p>
-                        <p><strong>Status:</strong> ${requestData.status}</p>
-                        <div class="request-actions" id="actions-${key}">
-                            <button id="accept-${key}" onclick="acceptRequest('${key}', '${email}', '${requestData.donor}')">Accept</button>
-                            <button id="deny-${key}" onclick="denyRequest('${key}', '${email}', '${requestData.donor}')">Deny</button>
-                        </div>
-                    `;
-                    requestsList.appendChild(requestDiv);
-                }
-            } catch (error) {
-                console.error(`Error parsing request data for key ${key}:`, error);
-            }
-        }
-    }
-
-    // Check if there are no requests
-    if (requestsList.innerHTML === '') {
-        requestsList.innerHTML = `<p>No requests found for ${email}.</p>`;
-    }
-}
-
-// Function to accept a request and send email to donor
-function acceptRequest(key, donorEmail, donorName) {
-    try {
-        const requestData = JSON.parse(localStorage.getItem(key));
-        requestData.status = 'accepted';
-        localStorage.setItem(key, JSON.stringify(requestData));
-
-        displayMessage(`Request from ${donorName} has been accepted.`);
-
-        // Hide the accept and deny buttons after acceptance and change button text
-        document.getElementById(`actions-${key}`).style.display = 'none';
-        const acceptButton = document.createElement('button');
-        acceptButton.textContent = 'Request Accepted';
-        acceptButton.className = 'updated-button accepted'; // Optional: Add a class for styling
-        document.getElementById(`actions-${key}`).parentElement.appendChild(acceptButton);
-
-        sendEmailToDonor(donorEmail, requestData, 'accepted');  // Send email after accepting the request
-
-        displayRequestsForDonor(donorEmail); // Refresh the request list
-    } catch (error) {
-        console.error(`Error accepting request for ${key}:`, error);
-        displayMessage('Error accepting request. Please try again.', true);
-    }
-}
-
-// Function to deny a request and send email to donor
-function denyRequest(key, donorEmail, donorName) {
-    try {
-        const requestData = JSON.parse(localStorage.getItem(key));
-        requestData.status = 'denied';
-        localStorage.setItem(key, JSON.stringify(requestData));
-
-        displayMessage(`Request from ${donorName} has been denied.`);
-
-        // Hide the accept and deny buttons after denial and change button text
-        document.getElementById(`actions-${key}`).style.display = 'none';
-        const denyButton = document.createElement('button');
-        denyButton.textContent = 'Request Denied';
-        denyButton.className = 'updated-button denied'; // Optional: Add a class for styling
-        document.getElementById(`actions-${key}`).parentElement.appendChild(denyButton);
-        sendEmailToDonor(donorEmail, requestData, 'denied');  // Send email after denying the request
-
-        displayRequestsForDonor(donorEmail); // Refresh the request list
-    } catch (error) {
-        console.error(`Error denying request for ${key}:`, error);
-        displayMessage('Error denying request. Please try again.', true);
-    }
-}
-
-// Function to send an email to the donor with request details
-function sendEmailToDonor(donorEmail, requestData, status) {
-    // Prepare the data to send
-    const emailData = {
-        donorEmail: donorEmail,
-        requestData: requestData,
-        status: status
-    };
-
-    // Send a POST request to the server
-    fetch('http://localhost:3000/send-donor-email', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(emailData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data.message); // Handle success message
-        alert(`Email sent to ${donorEmail} successfully!`); // Display success alert
-    })
-    .catch(error => {
-        console.error('Error sending email:', error);
-        alert('Failed to send email.'); // Display error alert
-    });
-
-
-    
-}
-
-
-// Function to display messages to the user
-function displayMessage(message, isError = false) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.innerHTML = message;
-    messageDiv.className = isError ? 'error' : 'success';
-    messageDiv.style.display = 'block';
-}
-
-// Automatically run when the page loads
-window.onload = function() {
-    const loggedInEmail = localStorage.getItem('loggedInEmail');
-
+    const loggedInEmail = sessionStorage.getItem('loggedInEmail');
     if (!loggedInEmail) {
-        displayMessage('No logged-in email found. Please log in first.', true);
+        requestsList.innerHTML = '<p>Please log in to view applications.</p>';
         return;
     }
 
-    // Compare the logged-in email with the stored one
-    if (loggedInEmail === 'bunnyhemasaireddy@gmail.com') {
-        displayMessage('Welcome, Hemasai! You have special access.', false);
-        displayRequestsForDonor(loggedInEmail);
-    } else {
-        displayRequestsForDonor(loggedInEmail);
+    try {
+        console.log('Fetching applications for donor:', loggedInEmail);
+        const response = await fetch(`http://localhost:3000/api/applications/${encodeURIComponent(loggedInEmail)}`);
+        
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+            console.error('Error response:', errorData);
+            throw new Error(errorData.message || `HTTP ${response.status}: Failed to fetch applications`);
+        }
+
+        const applications = await response.json();
+        console.log('Applications received:', applications);
+
+        if (!Array.isArray(applications)) {
+            console.error('Invalid response format:', applications);
+            requestsList.innerHTML = '<p>Error: Invalid response from server.</p>';
+            return;
+        }
+
+        if (applications.length === 0) {
+            requestsList.innerHTML = '<p>No pending applications at the moment.</p>';
+            return;
+        }
+
+        // Display all pending applications
+        applications.forEach(application => {
+            const requestDiv = document.createElement('div');
+            requestDiv.classList.add('request');
+            requestDiv.innerHTML = `
+                <p><strong>Requester Name:</strong> ${application.requester_name || application.requester_email || 'N/A'}</p>
+                <p><strong>Requester Email:</strong> ${application.requester_email || 'N/A'}</p>
+                <p><strong>Quantity Needed:</strong> ${application.quantity || 'N/A'} units</p>
+                <p><strong>Situation:</strong> ${application.situation || 'N/A'}</p>
+                <p><strong>Applied On:</strong> ${application.created_at ? new Date(application.created_at).toLocaleString() : 'N/A'}</p>
+                <div class="request-actions">
+                    <button onclick="acceptApplication(${application.id})">Accept</button>
+                    <button onclick="denyApplication(${application.id})">Deny</button>
+                </div>
+            `;
+            requestsList.appendChild(requestDiv);
+        });
+    } catch (error) {
+        console.error('Error fetching applications:', error);
+        requestsList.innerHTML = `<p>Error loading applications: ${error.message}. Please check the console for details.</p>`;
     }
-};
+}
+
+// Function to validate email format
+function isValidEmail(email) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
+// Function to accept an application
+async function acceptApplication(applicationId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/application/${applicationId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: 'accepted' }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || 'Failed to accept application');
+            return;
+        }
+
+        alert('Application has been accepted and email sent to requester.');
+        displayApplications(); // Refresh the applications list
+    } catch (error) {
+        console.error(`Error accepting application ${applicationId}:`, error);
+        alert('An error occurred. Please try again.');
+    }
+}
+
+// Function to deny an application
+async function denyApplication(applicationId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/application/${applicationId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: 'denied' }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || 'Failed to deny application');
+            return;
+        }
+
+        alert('Application has been denied and email sent to requester.');
+        displayApplications(); // Refresh the applications list
+    } catch (error) {
+        console.error(`Error denying application ${applicationId}:`, error);
+        alert('An error occurred. Please try again.');
+    }
+}

@@ -6,47 +6,53 @@ function generateRandomCode() {
 // Function to send a verification code (simulated here)
 let generatedCode; // Variable to store the generated code
 
-function sendVerificationCode() {
+async function sendVerificationCode() {
     const email = document.getElementById('email').value;
 
     // Check if the email is already registered
-    if (localStorage.getItem(email)) {
-        alert('This email is already registered. Please log in instead.');
-        window.location.href = 'login.html'; // Redirect to login page
+    try {
+        const response = await fetch('http://localhost:3000/api/check-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+        if (data.exists) {
+            alert('This email is already registered. Please log in instead.');
+            window.location.href = 'login.html'; // Redirect to login page
+            return;
+        }
+    } catch (error) {
+        console.error('Error checking email:', error);
+        alert('An error occurred. Please try again.');
         return;
     }
      
     // Generate and store the verification code
     generatedCode = generateRandomCode();
-    //alert(`Verification code sent to ${email}: ${generatedCode}`); // Simulated sending
-
     console.log(generatedCode);
 
+    // Make a request to the server to send the email
+    try {
+        const response = await fetch('http://localhost:3000/send-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, code: generatedCode }),
+        });
 
-
-
-    async function sendVerificationCoe() {
-    
-        // Make a request to the server to send the email
-        try {
-            const response = await fetch('http://localhost:3000/send-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, code: generatedCode }),
-            });
-    
-        } catch (error) {
-            console.error('Error sending verification code:', error);
-            alert('An error occurred. Please try again.');
+        if (!response.ok) {
+            throw new Error('Failed to send verification code');
         }
+    } catch (error) {
+        console.error('Error sending verification code:', error);
+        alert('An error occurred. Please try again.');
+        return;
     }
-    
-    sendVerificationCoe()
-
-
-
 
     // Show the verification code section and hide the email section
     document.getElementById('step1').style.display = 'none';
@@ -70,7 +76,7 @@ function verifyCode() {
 }
 
 // Form validation for signup
-function signup() {
+async function signup() {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const termsCheckbox = document.getElementById('termsCheckbox').checked;
@@ -82,13 +88,34 @@ function signup() {
     }
 
     // Validate the password and confirmation
-    if (password === confirmPassword) {
-        const email = document.getElementById('email').value;
-        localStorage.setItem(email, JSON.stringify({ password })); // Store email and password in local storage
+    if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+    }
+
+    const email = document.getElementById('email').value;
+
+    try {
+        const response = await fetch('http://localhost:3000/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || 'Signup failed. Please try again.');
+            return;
+        }
+
         alert('Signup successful! Redirecting to the login page.');
         window.location.href = 'login.html'; // Redirect to login page
-    } else {
-        alert('Passwords do not match. Please try again.');
+    } catch (error) {
+        console.error('Error during signup:', error);
+        alert('An error occurred. Please try again.');
     }
 }
 

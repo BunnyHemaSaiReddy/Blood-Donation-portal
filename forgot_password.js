@@ -1,5 +1,7 @@
 // Function to simulate sending a verification code
-function sendVerificationCode() {
+let generatedCode; // Variable to store the generated code
+
+async function sendVerificationCode() {
     const email = document.getElementById('email').value;
 
     if (!email) {
@@ -7,18 +9,51 @@ function sendVerificationCode() {
         return;
     }
 
-    // Simulate checking if the email is registered
-    if (!localStorage.getItem(email)) {
-        alert('Email is not registered. Please sign up first.');
-        window.location.href = 'signup.html';
+    // Check if the email is registered
+    try {
+        const response = await fetch('http://localhost:3000/api/check-email-exists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+        if (!data.exists) {
+            alert('Email is not registered. Please sign up first.');
+            window.location.href = 'signup.html';
+            return;
+        }
+    } catch (error) {
+        console.error('Error checking email:', error);
+        alert('An error occurred. Please try again.');
         return;
     }
 
     // Generate a random 6-digit verification code
-    const verificationCode = Math.floor(100000 + Math.random() * 900000);
-    localStorage.setItem('verificationCode', verificationCode); // Store the code temporarily for verification
+    generatedCode = Math.floor(100000 + Math.random() * 900000);
 
-    alert(`Verification code sent to ${email}: ${verificationCode}`); // Simulate sending the code
+    // Send verification code via email
+    try {
+        const response = await fetch('http://localhost:3000/send-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, code: generatedCode }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to send verification code');
+        }
+
+        alert(`Verification code sent to ${email}. Please check your email.`);
+    } catch (error) {
+        console.error('Error sending verification code:', error);
+        alert('An error occurred. Please try again.');
+        return;
+    }
 
     // Show the verification code input step
     document.getElementById('step1').style.display = 'none';
@@ -28,14 +63,13 @@ function sendVerificationCode() {
 // Function to verify the entered code
 function verifyCode() {
     const enteredCode = document.getElementById('verificationCode').value;
-    const storedCode = localStorage.getItem('verificationCode');
 
     if (!enteredCode) {
         alert('Please enter the verification code.');
         return;
     }
 
-    if (enteredCode === storedCode) {
+    if (enteredCode == generatedCode) {
         alert('Verification successful!');
         // Show the password reset step
         document.getElementById('step2').style.display = 'none';
@@ -46,7 +80,7 @@ function verifyCode() {
 }
 
 // Function to reset the password
-function resetPassword() {
+async function resetPassword() {
     const newPassword = document.getElementById('newPassword').value;
     const confirmNewPassword = document.getElementById('confirmNewPassword').value;
     const email = document.getElementById('email').value;
@@ -61,10 +95,26 @@ function resetPassword() {
         return;
     }
 
-    // Store the new password in local storage (for this simulation)
-    localStorage.setItem(email, JSON.stringify({ password: newPassword }));
-    localStorage.removeItem('verificationCode'); // Clean up stored verification code
+    try {
+        const response = await fetch('http://localhost:3000/api/reset-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, newPassword }),
+        });
 
-    alert('Password has been reset successfully! Redirecting to the login page.');
-    window.location.href = 'login.html'; // Redirect to the login page
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || 'Failed to reset password. Please try again.');
+            return;
+        }
+
+        alert('Password has been reset successfully! Redirecting to the login page.');
+        window.location.href = 'login.html'; // Redirect to the login page
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        alert('An error occurred. Please try again.');
+    }
 }
