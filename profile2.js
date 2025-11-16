@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Function to display the donor's profile
 async function displayProfile(email) {
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/user/${email}`);
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/user/${email}`);
         
         if (!response.ok) {
             throw new Error('Failed to fetch profile');
@@ -77,7 +77,7 @@ async function checkApplicationStatus(donorEmail) {
     }
 
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/application-status/${donorEmail}/${requesterEmail}`);
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application-status/${donorEmail}/${requesterEmail}`);
         
         if (!response.ok) {
             return;
@@ -111,7 +111,7 @@ async function checkApplicationStatus(donorEmail) {
 // Function to display applicants (for donor viewing their own profile)
 async function displayApplicants(donorEmail) {
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/applications/${encodeURIComponent(donorEmail)}`);
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/applications/${encodeURIComponent(donorEmail)}`);
         
         if (!response.ok) {
             console.error('Failed to fetch applicants');
@@ -158,7 +158,7 @@ async function displayApplicants(donorEmail) {
 // Functions to handle accept/deny from profile page
 async function acceptApplicationFromProfile(applicationId) {
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ async function acceptApplicationFromProfile(applicationId) {
 
 async function denyApplicationFromProfile(applicationId) {
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ async function sendApplication(email) {
     try {
         alert('Sending your application...');
 
-        const response = await fetch('http://bunny-blooddonation.onrender.com/api/application', {
+        const response = await fetch('https://bunny-blooddonation.onrender.com/api/application', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -265,4 +265,5 @@ async function sendApplication(email) {
         alert('An error occurred. Please try again.');
     }
 }
+
 
