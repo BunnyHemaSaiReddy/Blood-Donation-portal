@@ -15,14 +15,14 @@ async function displayApplications() {
 
     try {
         console.log('Fetching applications for donor:', loggedInEmail);
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/applications/${encodeURIComponent(loggedInEmail)}`);
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/applications/${encodeURIComponent(loggedInEmail)}`);
         
         console.log('Response status:', response.status);
         
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
             console.error('Error response:', errorData);
-            throw new Error(errorData.message || `HTTP ${response.status}: Failed to fetch applications`);
+            throw new Error(errorData.message || `https ${response.status}: Failed to fetch applications`);
         }
 
         const applications = await response.json();
@@ -71,7 +71,7 @@ function isValidEmail(email) {
 // Function to accept an application
 async function acceptApplication(applicationId) {
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ async function acceptApplication(applicationId) {
 // Function to deny an application
 async function denyApplication(applicationId) {
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/application/${applicationId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -119,4 +119,5 @@ async function denyApplication(applicationId) {
         alert('An error occurred. Please try again.');
     }
 }
+
 
