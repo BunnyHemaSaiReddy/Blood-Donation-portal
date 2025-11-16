@@ -394,6 +394,29 @@ app.get('/api/applications-status/:requester_email', async (req, res) => {
     }
 });
 
+// Get application by ID
+app.get('/api/application/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [rows] = await pool.query(`
+            SELECT a.*, u.email as requester_email, p.name as requester_name
+            FROM applications a
+            INNER JOIN users u ON a.requester_email = u.email
+            LEFT JOIN profiles p ON a.requester_email = p.email
+            WHERE a.id = ?
+        `, [id]);
+        
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Application not found.' });
+        }
+        
+        return res.status(200).json(rows[0]);
+    } catch (error) {
+        console.error('Error fetching application:', error);
+        return res.status(500).json({ message: 'Error fetching application.' });
+    }
+});
+
 // Accept or deny application
 app.put('/api/application/:id', async (req, res) => {
     try {
@@ -471,6 +494,110 @@ app.post('/api/reset-password', async (req, res) => {
     }
 });
 
+// Send email to donor and receiver
+app.post('/send-donor-email', async (req, res) => {
+    try {
+        const { donorEmail, requestData, status } = req.body;
+
+        if (!donorEmail || !requestData || !status) {
+            return res.status(400).json({ message: 'Donor email, request data, and status are required.' });
+        }
+
+        // Get donor phone number from database
+        let phoneNumber = 'Phone number not available';
+        try {
+            const [profileRows] = await pool.query('SELECT phoneNumber FROM profiles WHERE email = ?', [donorEmail]);
+            if (profileRows.length > 0 && profileRows[0].phoneNumber) {
+                phoneNumber = profileRows[0].phoneNumber;
+            }
+        } catch (error) {
+            console.error('Error fetching phone number:', error);
+        }
+
+        const donorEmailBody = `
+Hello ${donorEmail},
+
+Your blood donation request has been ${status} for the requester ${requestData.requester}.
+
+Details of the request:
+- Blood Quantity Needed: ${requestData.quantity} units
+- Situation: ${requestData.situation}
+- Status: ${status}
+
+Thank you for your willingness to donate blood!
+
+Best Regards,
+Blood Donation Management Team
+        `;
+
+        const donorMailOptions = {
+            from: 'hsr.bunny.2004@gmail.com',
+            to: donorEmail,
+            subject: 'Blood Donation Request Status',
+            text: donorEmailBody,
+        };
+
+        transporter.sendMail(donorMailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email to donor:', error);
+                return res.status(500).json({ message: 'Error sending email to donor.' });
+            } else {
+                console.log('Email sent to donor:', info.response);
+                
+                // Get requester email
+                const requesterEmail = requestData.requesterEmail || requestData.requester;
+                
+                // Send email to the receiver
+                const receiverEmailBody = `
+Hello ${requestData.requester},
+
+We are pleased to inform you that your blood donation request has been ${status} by the donor ${donorEmail}.
+
+${status === 'accepted' ? `
+**Donor Details:**
+- **Donor Email:** ${donorEmail}
+- **Donor Phone Number:** ${phoneNumber}
+
+Please contact the donor directly to coordinate the blood donation.
+` : `
+Unfortunately, the request has been denied. If you have any questions, feel free to reach out to us.
+`}
+
+**Details of Your Request:**
+- Blood Quantity Needed: ${requestData.quantity} units
+- Situation: ${requestData.situation}
+
+Thank you for your willingness to help others in need!
+
+Best Regards,
+Blood Donation Management Team
+                `;
+
+                const receiverMailOptions = {
+                    from: 'hsr.bunny.2004@gmail.com',
+                    to: requesterEmail,
+                    subject: 'Blood Donation Request Update',
+                    text: receiverEmailBody,
+                };
+
+                // Send email to the receiver
+                transporter.sendMail(receiverMailOptions, (error, info) => {
+                    if (error) {
+                        console.error('Error sending email to receiver:', error);
+                        return res.status(500).json({ message: 'Error sending email to receiver.' });
+                    } else {
+                        console.log('Email sent to receiver:', info.response);
+                        return res.status(200).json({ message: 'Emails sent successfully to both donor and receiver.' });
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Error in send-donor-email:', error);
+        return res.status(500).json({ message: 'Error sending emails.' });
+    }
+});
+
 // Check if email exists (for forgot password)
 app.post('/api/check-email-exists', async (req, res) => {
     try {
@@ -490,9 +617,9 @@ app.post('/api/check-email-exists', async (req, res) => {
 
 // Initialize database on server start
 initializeDatabase().then(() => {
-    // Start the server
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
         
         // Automatically open index.html in the default browser
         const { exec } = require('child_process');
