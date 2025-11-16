@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fetch user data from database
     try {
-        const response = await fetch(`http://bunny-blooddonation.onrender.com/api/user/${loggedInEmail}`);
+        const response = await fetch(`https://bunny-blooddonation.onrender.com/api/user/${loggedInEmail}`);
         if (response.ok) {
             storedData = await response.json();
         }
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Fetch existing data to retain profile picture if not changed
         let existingData = null;
         try {
-            const response = await fetch(`http://bunny-blooddonation.onrender.com/api/user/${loggedInEmail}`);
+            const response = await fetch(`https://bunny-blooddonation.onrender.com/api/user/${loggedInEmail}`);
             if (response.ok) {
                 existingData = await response.json();
             }
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         try {
-            const response = await fetch('http://bunny-blooddonation.onrender.com/api/profile', {
+            const response = await fetch('https://bunny-blooddonation.onrender.com/api/profile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -160,4 +160,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+
 
