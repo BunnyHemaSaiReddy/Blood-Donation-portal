@@ -21,8 +21,8 @@ async function displayDonors() {
     try {
         // Fetch donors
         const url = bloodGroup ? 
-            `http://localhost:3000/api/donors?bloodGroup=${encodeURIComponent(bloodGroup)}` :
-            'http://localhost:3000/api/donors';
+            `https://bunny-blooddonation.onrender.com/api/donors?bloodGroup=${encodeURIComponent(bloodGroup)}` :
+            'https://bunny-blooddonation.onrender.com/api/donors';
         
         const donorsResponse = await fetch(url);
         
@@ -36,7 +36,7 @@ async function displayDonors() {
         let applicationStatusMap = {};
         if (loggedInEmail) {
             try {
-                const statusResponse = await fetch(`http://localhost:3000/api/applications-status/${loggedInEmail}`);
+                const statusResponse = await fetch(`https://bunny-blooddonation.onrender.com/api/applications-status/${loggedInEmail}`);
                 if (statusResponse.ok) {
                     applicationStatusMap = await statusResponse.json();
                 }
@@ -96,3 +96,4 @@ function viewProfile(email) {
     // Redirect to profile2.html with the email as a query parameter
     window.location.href = `profile2.html?email=${encodeURIComponent(email)}`;
 }
+
