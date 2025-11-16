@@ -104,3 +104,4 @@ async function initializeDatabase() {
 
 module.exports = { pool, initializeDatabase };
 
+
